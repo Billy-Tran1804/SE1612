@@ -6,10 +6,7 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author AD
  */
-@WebServlet(urlPatterns = {"/a"})
-public class FirstServlet extends HttpServlet {
+public class CalServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,16 +31,15 @@ public class FirstServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            response.setContentType("text/html");
-  		
-  		Enumeration headerNames = request.getHeaderNames();
-  		out.println("<TABLE>");
-  		while(headerNames.hasMoreElements()) {
-    		       String headerName = (String)headerNames.nextElement();
-	    	       out.println("<TR><TD>" + headerName+"</TD>");
-    		       out.println("<TD>" + request.getHeader(headerName)+"</TD></TR>");
-  		}
-  		out.println("</TABLE>");
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CalServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet CalServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -60,8 +55,7 @@ public class FirstServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            request.getRequestDispatcher("b").forward(request, response);
-            response.sendRedirect("home.html");
+        processRequest(request, response);
     }
 
     /**
@@ -75,19 +69,7 @@ public class FirstServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         //get form data	
-  	  String u =request.getParameter("user");
-  	  String p=request.getParameter("pass");
-          
-          ServletContext sc = getServletContext();
-          String user = sc.getInitParameter("Username");
-	  response.setContentType("text/html");
-     	  PrintWriter out = response.getWriter();
-      	  out.println("<html><body>");
-      	  out.println("<h1>You sent me:</h1>");
-  	  out.println(u+"<br>"+p);
-  	  out.println("</body></html>");
-
+        processRequest(request, response);
     }
 
     /**
